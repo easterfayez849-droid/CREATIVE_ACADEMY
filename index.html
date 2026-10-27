@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Creative Academy — learn today, build tomorrow." />
+  <title>Creative Academy</title>
+  <style>
+    :root {
+      --ink: #19172b;
+      --muted: #6d6b80;
+      --purple: #6c4cf1;
+      --purple-dark: #4d32ce;
+      --lavender: #f3f0ff;
+      --line: #e9e6f3;
+      --white: #fff;
+      --shadow: 0 18px 45px rgba(45, 31, 105, .09);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #fff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .navbar {
+      height: 78px; display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; background: rgba(255,255,255,.92);
+      position: sticky; top: 0; z-index: 10; border-bottom: 1px solid rgba(233,230,243,.8);
+      backdrop-filter: blur(14px);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 1.12rem; font-weight: 800; letter-spacing: -.04em; }
+    .brand-mark {
+      display: grid; place-items: center; width: 38px; height: 38px; color: white; border-radius: 12px;
+      background: linear-gradient(135deg, #8b70ff, #5b3ce6); box-shadow: 0 7px 16px #6c4cf13b;
+    }
+    .brand-mark svg { width: 22px; height: 22px; }
+    .nav-links { display: flex; align-items: center; gap: 30px; color: #57546c; font-size: .94rem; font-weight: 600; }
+    .nav-links a:hover { color: var(--purple); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer;
+      border-radius: 12px; padding: 12px 19px; font-weight: 700; transition: .2s ease;
+    }
+    .btn-primary { color: #fff; background: var(--purple); box-shadow: 0 9px 22px #6c4cf133; }
+    .btn-primary:hover { background: var(--purple-dark); transform: translateY(-2px); }
+    .btn-quiet { color: var(--purple); background: #f0ecff; }
+    .menu-toggle { display: none; background: transparent; border: 0; font-size: 1.7rem; color: var(--ink); cursor: pointer; }
+    .hero {
+      position: relative; overflow: hidden; padding: 88px 0 84px;
+      background: radial-gradient(circle at 82% 22%, #e6ddff 0, transparent 30%),
+                  radial-gradient(circle at 10% 90%, #f3eaff 0, transparent 34%),
+                  linear-gradient(115deg, #fbfaff 0%, #f8f6ff 52%, #f2efff 100%);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 55px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--purple); background: #eae4ff; padding: 7px 12px; border-radius: 999px; font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--purple); }
+    h1 { font-size: clamp(2.7rem, 5.3vw, 4.7rem); line-height: 1.06; letter-spacing: -.065em; margin: 22px 0 20px; max-width: 640px; }
+    h1 span { color: var(--purple); }
+    .hero-copy { color: var(--muted); font-size: 1.08rem; max-width: 500px; margin: 0 0 29px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-proof { display: flex; align-items: center; gap: 13px; margin-top: 34px; color: var(--muted); font-size: .86rem; }
+    .avatars { display: flex; padding-left: 4px; }
+    .avatar { width: 29px; height: 29px; border: 2px solid #fff; border-radius: 50%; margin-left: -5px; display: grid; place-items: center; font-size: .72rem; font-weight: 800; color: #fff; }
+    .avatar:nth-child(1) { background: #f2a36f; } .avatar:nth-child(2) { background: #7a70dc; } .avatar:nth-child(3) { background: #4ba99b; } .avatar:nth-child(4) { background: #df7c9d; }
+    .hero-art { min-height: 360px; position: relative; display: grid; place-items: center; }
+    .art-orb { width: min(365px, 85%); aspect-ratio: 1; border-radius: 50%; background: linear-gradient(140deg, #dcd2ff, #b9a8ff 60%, #8d75ff); position: absolute; box-shadow: inset -20px -20px 45px #6946d833; }
+    .art-card {
+      position: absolute; background: rgba(255,255,255,.94); border: 1px solid #fff; border-radius: 20px;
+      box-shadow: var(--shadow); padding: 17px; backdrop-filter: blur(10px);
+    }
+    .code-card { width: 250px; top: 47px; left: 3%; transform: rotate(-5deg); }
+    .code-top { display: flex; gap: 5px; margin-bottom: 17px; }
+    .code-top i { width: 7px; height: 7px; border-radius: 50%; background: #f29d9d; }
+    .code-top i:nth-child(2) { background: #f3ce75; } .code-top i:nth-child(3) { background: #70c9a4; }
+    .code-line { height: 7px; border-radius: 8px; background: #e8e4f5; margin: 10px 0; }
+    .code-line:nth-child(2) { width: 76%; background: #b9a7ff; } .code-line:nth-child(3) { width: 92%; } .code-line:nth-child(4) { width: 61%; background: #d8a5d7; } .code-line:nth-child(5) { width: 83%; }
+    .float-icon { width: 70px; height: 70px; display: grid; place-items: center; font-size: 2rem; border-radius: 22px; background: #fff; box-shadow: var(--shadow); position: absolute; }
+    .float-icon.brush { right: 3%; top: 37px; transform: rotate(9deg); }
+    .float-icon.brackets { right: 2%; bottom: 42px; transform: rotate(-8deg); color: var(--purple); font-weight: 900; }
+    .progress-card { left: 5%; bottom: 35px; display: flex; align-items: center; gap: 12px; transform: rotate(3deg); }
+    .progress-icon { width: 42px; height: 42px; display: grid; place-items: center; background: #e7fff4; color: #15976a; border-radius: 13px; font-size: 1.3rem; }
+    .progress-card strong { display: block; font-size: .92rem; } .progress-card small { color: var(--muted); }
+    .section { padding: 84px 0; }
+    .section-heading { text-align: center; max-width: 620px; margin: 0 auto 42px; }
+    .section-heading h2 { margin: 0 0 10px; font-size: clamp(2rem, 3vw, 2.7rem); line-height: 1.15; letter-spacing: -.05em; }
+    .section-heading p { color: var(--muted); margin: 0; }
+    .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .course-card { position: relative; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: #fff; transition: .25s ease; }
+    .course-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: #d9d0ff; }
+    .course-visual { min-height: 178px; display: grid; place-items: center; position: relative; overflow: hidden; }
+    .course-visual::before, .course-visual::after { content: ""; position: absolute; border-radius: 50%; border: 1px solid #ffffff80; }
+    .course-visual::before { width: 180px; height: 180px; right: -20px; top: -70px; }
+    .course-visual::after { width: 125px; height: 125px; left: -20px; bottom: -72px; }
+    .visual-web { background: linear-gradient(135deg, #e7e0ff, #cfc3ff); }
+    .visual-design { background: linear-gradient(135deg, #ffe9e1, #ffcbb9); }
+    .visual-data { background: linear-gradient(135deg, #d9f7ed, #a7e4d1); }
+    .course-symbol { width: 90px; height: 90px; border-radius: 25px; display: grid; place-items: center; background: rgba(255,255,255,.82); box-shadow: 0 15px 30px #3020501a; z-index: 1; font-size: 2.4rem; }
+    .new-tag { position: absolute; top: 16px; left: 16px; background: #fff; color: var(--purple); border-radius: 999px; padding: 5px 10px; font-size: .7rem; font-weight: 800; letter-spacing: .06em; }
+    .course-body { padding: 23px; }
+    .course-body h3 { margin: 0 0 8px; font-size: 1.25rem; letter-spacing: -.025em; }
+    .course-body p { color: var(--muted); font-size: .94rem; min-height: 51px; margin: 0 0 20px; }
+    .course-link { color: var(--purple); font-weight: 800; font-size: .92rem; display: inline-flex; align-items: center; gap: 7px; }
+    .course-link:hover { gap: 12px; }
+    .why { background: #faf9ff; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature { padding: 25px; background: #fff; border: 1px solid var(--line); border-radius: 18px; }
+    .feature-icon { width: 47px; height: 47px; display: grid; place-items: center; background: var(--lavender); color: var(--purple); border-radius: 14px; font-size: 1.35rem; margin-bottom: 16px; }
+    .feature h3 { margin: 0 0 7px; font-size: 1.08rem; } .feature p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .cta { padding: 0 0 84px; }
+    .cta-panel { border-radius: 28px; padding: 48px; color: #fff; display: flex; justify-content: space-between; align-items: center; gap: 25px; background: linear-gradient(115deg, #4f34ce, #7d5bfa); position: relative; overflow: hidden; }
+    .cta-panel::after { content: ""; position: absolute; width: 300px; height: 300px; border: 1px solid #ffffff2e; border-radius: 50%; right: 12%; top: -180px; box-shadow: 0 0 0 35px #ffffff08, 0 0 0 70px #ffffff08; }
+    .cta-panel h2 { margin: 0 0 8px; font-size: clamp(1.7rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -.04em; }
+    .cta-panel p { margin: 0; color: #e4ddff; }
+    .cta-panel .btn { background: #fff; color: var(--purple-dark); z-index: 1; white-space: nowrap; }
+    footer { border-top: 1px solid var(--line); padding: 28px 0; color: var(--muted); font-size: .88rem; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+    .footer-brand { color: var(--ink); font-weight: 800; }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; color: #fff; background: #211b3d; padding: 12px 18px; border-radius: 12px; box-shadow: var(--shadow); transition: .25s; z-index: 30; max-width: calc(100% - 32px); text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    @media (max-width: 850px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 25px; }
+      .hero { padding-top: 65px; }
+      .hero-art { min-height: 330px; }
+      .course-grid, .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { gap: 17px; }
+    }
+    @media (max-width: 620px) {
+      .container { width: min(100% - 30px, 1120px); }
+      .navbar { height: 68px; }
+      .menu-toggle { display: block; }
+      .nav-links { display: none; position: absolute; top: 68px; left: 0; right: 0; padding: 18px 22px 22px; background: #fff; border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 14px; }
+      .nav-links.open { display: flex; }
+      .nav-links .btn { width: 100%; }
+      .nav-inner > .btn { display: none; }
+      .hero { padding: 54px 0 48px; }
+      h1 { font-size: clamp(2.55rem, 12vw, 3.7rem); }
+      .hero-copy { font-size: 1rem; }
+      .hero-art { min-height: 290px; }
+      .art-orb { width: 255px; }
+      .code-card { width: 190px; left: 0; top: 28px; padding: 13px; }
+      .float-icon { width: 53px; height: 53px; border-radius: 16px; font-size: 1.5rem; }
+      .float-icon.brush { right: 0; top: 23px; }
+      .progress-card { left: 0; bottom: 17px; padding: 12px; }
+      .float-icon.brackets { right: 0; bottom: 25px; }
+      .section { padding: 62px 0; }
+      .course-grid, .feature-grid { grid-template-columns: 1fr; }
+      .course-body p { min-height: auto; }
+      .cta { padding-bottom: 60px; }
+      .cta-panel { padding: 30px 24px; flex-direction: column; align-items: flex-start; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="#home" aria-label="Creative Academy home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 17.5 12 4l7 13.5M8 13h8M6.5 20h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span>Creative Academy</span>
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#courses">Courses</a>
+        <a href="#about">About us</a>
+        <a class="btn btn-primary" href="#courses">Get Started <span aria-hidden="true">↗</span></a>
+      </nav>
+      <a class="btn btn-primary" href="#courses">Get Started <span aria-hidden="true">↗</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow"><span class="eyebrow-dot"></span> Your future starts here</span>
+          <h1>Learn Today,<br><span>Build Tomorrow</span></h1>
+          <p class="hero-copy">Join our academy and gain the skills you need to create your dream career in technology.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#courses">Explore Courses <span aria-hidden="true">→</span></a>
+            <a class="btn btn-quiet" href="#about">Discover our academy</a>
+          </div>
+          <div class="hero-proof">
+            <div class="avatars" aria-hidden="true"><span class="avatar">A</span><span class="avatar">M</span><span class="avatar">S</span><span class="avatar">+</span></div>
+            <span><strong>Learn something new</strong><br>Build skills for your next step.</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of digital learning">
+          <div class="art-orb"></div>
+          <div class="art-card code-card">
+            <div class="code-top"><i></i><i></i><i></i></div>
+            <div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div>
+            <div style="display:flex;gap:8px;margin-top:17px"><span style="background:#e7fff4;color:#178a63;padding:5px 9px;border-radius:7px;font-size:.7rem;font-weight:800">HTML</span><span style="background:#f0ecff;color:#6748dc;padding:5px 9px;border-radius:7px;font-size:.7rem;font-weight:800">CSS</span><span style="background:#fff0e6;color:#b96930;padding:5px 9px;border-radius:7px;font-size:.7rem;font-weight:800">JS</span></div>
+          </div>
+          <div class="float-icon brush" aria-hidden="true">🎨</div>
+          <div class="float-icon brackets" aria-hidden="true">&lt;/&gt;</div>
+          <div class="art-card progress-card">
+            <div class="progress-icon">✓</div>
+            <div><strong>Keep growing</strong><small>One skill at a time</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="courses">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Our Popular Courses</h2>
+          <p>Explore our top courses and start your learning journey.</p>
+        </div>
+        <div class="course-grid">
+          <article class="course-card">
+            <div class="course-visual visual-web">
+              <span class="new-tag">NEW</span>
+              <div class="course-symbol" aria-hidden="true">💻</div>
+            </div>
+            <div class="course-body">
+              <h3>Web Development</h3>
+              <p>Learn HTML, CSS and JavaScript to build amazing websites.</p>
+              <a class="course-link" href="#get-started" data-course="Web Development">Learn More <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+          <article class="course-card">
+            <div class="course-visual visual-design">
+              <div class="course-symbol" aria-hidden="true">✏️</div>
+            </div>
+            <div class="course-body">
+              <h3>UI/UX Design</h3>
+              <p>Discover how to create beautiful and user-friendly interfaces.</p>
+              <a class="course-link" href="#get-started" data-course="UI/UX Design">Learn More <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+          <article class="course-card">
+            <div class="course-visual visual-data">
+              <div class="course-symbol" aria-hidden="true">📊</div>
+            </div>
+            <div class="course-body">
+              <h3>Data Science</h3>
+              <p>Turn data into useful insights and make better decisions.</p>
+              <a class="course-link" href="#get-started" data-course="Data Science">Learn More <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section why" id="about">
+      <div class="container">
+        <div class="section-heading">
+          <h2>A smarter way to learn</h2>
+          <p>Build practical skills with a clear path from curiosity to confidence.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature"><div class="feature-icon">✦</div><h3>Practical learning</h3><p>Focus on useful skills and projects that help you put ideas into practice.</p></article>
+          <article class="feature"><div class="feature-icon">⌘</div><h3>Modern skills</h3><p>Explore creative and technical topics designed for a changing digital world.</p></article>
+          <article class="feature"><div class="feature-icon">↗</div><h3>Grow at your pace</h3><p>Start with the basics, keep practicing, and build toward your goals.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="get-started">
+      <div class="container">
+        <div class="cta-panel">
+          <div><h2>Ready to build your future?</h2><p>Choose a course and take your next step with Creative Academy.</p></div>
+          <a class="btn" href="#courses">Browse Courses <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <a href="#home" class="footer-brand">Creative Academy</a>
+      <span>Learn new skills. Build your future.</span>
+      <span>© <span id="year"></span> Creative Academy</span>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const toast = document.getElementById('toast');
+    let toastTimer;
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    menuToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.textContent = open ? '×' : '☰';
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.textContent = '☰';
+      });
+    });
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    document.querySelectorAll('[data-course]').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        const course = link.dataset.course;
+        showToast(`${course}: course details can be connected here.`);
+      });
+    });
+  </script>
+</body>
+</html>
